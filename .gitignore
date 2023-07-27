@@ -20,3 +20,7 @@ venv.bak/
 loss.dat
 test.dat
 train.dat
+
+# data for writing thesis
+data/
+
