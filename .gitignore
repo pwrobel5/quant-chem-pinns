@@ -23,4 +23,6 @@ train.dat
 
 # data for writing thesis
 data/
+*.dat
+*.png
 
