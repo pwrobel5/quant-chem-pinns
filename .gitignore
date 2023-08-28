@@ -26,3 +26,6 @@ data/
 *.dat
 *.png
 
+# trajectories
+*.xyz
+

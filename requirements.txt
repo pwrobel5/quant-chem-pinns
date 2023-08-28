@@ -3,3 +3,6 @@ tensorrt==8.6.0
 tensorflow==2.12.0
 tensorflow-probability==0.19.0
 DeepXDE==1.8.2
+schnetpack==2.0.3
+tensorboard==2.12.0
+pandas==2.0.3
