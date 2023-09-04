@@ -25,6 +25,7 @@ train.dat
 data/
 *.dat
 *.png
+*.csv
 
 # trajectories
 *.xyz
