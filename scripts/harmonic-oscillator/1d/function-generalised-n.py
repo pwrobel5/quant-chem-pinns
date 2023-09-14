@@ -64,7 +64,7 @@ def save_results_for_n(n, num_points=DEFAULT_NUM_TEST):
     y_pred = predict_for_n(points)
     y_true = psi(points)
 
-    plt.figure()
+    '''plt.figure()
     
     plt.plot(x, y_true, 'o', color='black', label='Testing points')
     plt.plot(x, y_true, '-', color='black', label='True values')
@@ -74,7 +74,7 @@ def save_results_for_n(n, num_points=DEFAULT_NUM_TEST):
     plt.ylabel('$\psi_{}$(x)'.format(n))
     
     plt.legend()
-    plt.savefig('{}-{}-{}-{}-results.png'.format(n, num_dense_layers, num_dense_nodes, num_train))
+    plt.savefig('{}-{}-{}-{}-results.png'.format(n, num_dense_layers, num_dense_nodes, num_train))'''
     
     test_metric = dde.metrics.l2_relative_error(y_true, y_pred)
     row = [n, num_dense_layers, num_dense_nodes, num_train, num_test, test_metric]
