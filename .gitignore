@@ -33,4 +33,17 @@ data/
 # schnetpack outputs
 */split.npz
 */splitting.lock
+*-model/
 
+# Slater-Koster files
+*.skf
+*/3ob/*
+
+# DFTB+ outputs
+band.out
+detailed.out
+dftb_pin.hsd
+md.out
+results.tag
+*.gen
+*.log
