@@ -63,11 +63,11 @@ def get_collocation_points(n, l):
     
     r_interval = R_MAX / (4 * (n + l))
     
-    for k in range(3 * (n + l) - 1):
+    for k in range(4 * (n + l) - 1):
         r = (k + 1) * r_interval
         r_values.append(r)
     
-    return np.array(r_values).reshape((3 * (n + l) - 1, 1))
+    return np.array(r_values).reshape((4 * (n + l) - 1, 1))
 
 def boundary(x, on_boundary):
     return on_boundary and np.isclose(x, R_MAX)[0]
