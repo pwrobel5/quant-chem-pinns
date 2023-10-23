@@ -15,7 +15,7 @@ class ChargeWriter:
 
     HEADER = '6\n F F F T {} 1 {:.16f}\n'
 
-    def __init__(self, numbers, charges, charge_file_name='charges-test.dat'):
+    def __init__(self, numbers, charges, charge_file_name='charges.dat'):
         self._numbers = numbers
         self._charges = charges
         self._charge_file_name = charge_file_name

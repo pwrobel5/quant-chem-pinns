@@ -4,7 +4,7 @@ __pycache__/
 *$py.class
 
 # C extensions
-*.so
+*.so*
 
 # Jupyter Notebook
 .ipynb_checkpoints
@@ -34,6 +34,8 @@ data/
 */split.npz
 */splitting.lock
 *-model/
+*.hdf5
+*.chk
 
 # Slater-Koster files
 *.skf
@@ -47,3 +49,7 @@ md.out
 results.tag
 *.gen
 *.log
+*.dip
+
+# Executables
+*.x
