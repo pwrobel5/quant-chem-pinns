@@ -1,5 +1,5 @@
 Geometry = GenFormat {
-  <<< "ec-non-pbc.gen"
+  <<< "f1ec-pbc.gen"
 }
 
 Driver = VelocityVerlet {
@@ -14,7 +14,7 @@ Driver = VelocityVerlet {
   Steps = 5
   MovedAtoms = 1:-1
   MDRestartFrequency = 100
-  OutputPrefix = "ec"
+  OutputPrefix = "f1ec-pbc"
 }
 
 Hamiltonian = DFTB {
@@ -30,9 +30,16 @@ Hamiltonian = DFTB {
     O = "p"
     H = "s"
     C = "p"
+    F = "p"
   }
   Filling = Fermi {
     Temperature [Kelvin] = 298.0
+  }
+  KPointsAndWeights = SupercellFolding {
+    1 0 0
+    0 1 0
+    0 0 1
+    0 0 0
   }
   Dispersion = LennardJones {
     Parameters = UFFParameters {}
@@ -42,6 +49,7 @@ Hamiltonian = DFTB {
     O = -0.1575
     H = -0.1857
     C = -0.1492
+    F = -0.1623
   }
   HCorrection = Damping {
     Exponent = 4.00
