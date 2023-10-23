@@ -27,7 +27,7 @@ class DftbCalculator(MDCalculator):
         position_unit (float, float): Placeholder, not used (DFTB+ uses Bohr converted then to internal MD units).
         neighbor_list (schnetpack.md.neighbor_list.MDNeighborList): Neighbor list object for determining which
                                                                     interatomic distances should be computed.
-        system (System): simulated system, during initialization only atomic numbers are read.
+        system (System): simulated system, for reading atomic numbers and generation of initial charges.
         energy_key (str, optional): If provided, label is used to store the energies returned by the model to the
                                       system.
         required_properties (list): List of properties to be computed by the calculator
@@ -80,14 +80,18 @@ class DftbCalculator(MDCalculator):
         Read atom numbers from system variable and initialize ChargeWriter for further calculation.
 
         Args:
-            system (System): object representing the system modeled in MD (only atomic numbers are read at this point).
+            system (System): object representing the system modeled in MD.
         
         Returns:
-            ChargeWriter: initialized with atomic numbers object for writing charges.
+            ChargeWriter: initialized with atomic numbers object for writing charges and written initial charges.
         '''
         
         numbers = system.atom_types.tolist()
-        result = ChargeWriter(numbers, [], 'charges.dat')
+        input = self._generate_input(system)
+        initial_charges = self.model(input)['charges']
+        
+        result = ChargeWriter(numbers, initial_charges, 'charges.dat')
+        result.save_charges()
         
         return result
 
