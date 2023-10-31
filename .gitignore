@@ -36,6 +36,8 @@ data/
 *-model/
 *.hdf5
 *.chk
+*.tfevents.*
+schnet/md/*
 
 # Slater-Koster files
 *.skf
