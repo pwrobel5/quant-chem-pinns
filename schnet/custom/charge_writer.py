@@ -10,7 +10,36 @@ class ChargeWriter:
         7: 5,
         8: 6,
         9: 7,
-        10: 8
+        10: 8,
+        11: 1,
+        12: 2,
+        13: 3,
+        14: 4,
+        15: 5,
+        16: 6,
+        17: 7,
+        18: 8
+    }
+
+    MAX_ANGULAR_MOMENTUM = {
+        1: 's',
+        2: 's',
+        3: 's',
+        4: 's',
+        5: 'p',
+        6: 'p',
+        7: 'p',
+        8: 'p',
+        9: 'p',
+        10: 'p',
+        11: 'd',
+        12: 'd',
+        13: 'd',
+        14: 'd',
+        15: 'd',
+        16: 'd',
+        17: 'd',
+        18: 'd'
     }
 
     HEADER = '6\n F F F T {} 1 {:.16f}\n'
@@ -49,10 +78,12 @@ class ChargeWriter:
         charge_file.write(ChargeWriter.HEADER.format(len(valence_populations), sum(valence_populations)))
 
         for population, number in zip(valence_populations, self._numbers):
-            if number > 2:
-                charge_file.write('{:.16f} {:.16f} {:.16f} {:.16f}\n'.format(population, 0.0, 0.0, 0.0))
-            else:
+            if ChargeWriter.MAX_ANGULAR_MOMENTUM[number] == 's':
                 charge_file.write('{:.16f}\n'.format(population))
+            elif ChargeWriter.MAX_ANGULAR_MOMENTUM[number] == 'p':
+                charge_file.write('{:.16f} {:.16f} {:.16f} {:.16f}\n'.format(population, 0.0, 0.0, 0.0))
+            elif ChargeWriter.MAX_ANGULAR_MOMENTUM[number] == 'd':
+                charge_file.write('{:.16f} {:.16f} {:.16f} {:.16f} {:.16f} {:.16f} {:.16f} {:.16f} {:.16f}\n'.format(population, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0))
         
         charge_file.write('0 0\n')
 
