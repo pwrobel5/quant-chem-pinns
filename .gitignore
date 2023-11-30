@@ -26,9 +26,11 @@ data/
 *.dat
 *.png
 *.csv
+*.agr
 
 # trajectories
 *.xyz
+schnet/md-results/*
 
 # schnetpack outputs
 */split.npz
@@ -52,6 +54,7 @@ results.tag
 *.gen
 *.log
 *.dip
+slurm-*.out
 
 # Executables
 *.x
