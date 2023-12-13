@@ -8,11 +8,14 @@ import quantchem.pinns.approaches.function.fixedn as fixedn
 import quantchem.pinns.utils as utils
 
 
-DEFAULT_NX = 1
-DEFAULT_NY = 1
+DEFAULT_NX = 0
+DEFAULT_NY = 0
 
-LX = 2
-LY = 2
+LX = 5
+LY = 5
+m = 1
+omega_x = 0.5
+omega_y = 0.5
 
 
 def parse_arguments():
@@ -26,10 +29,15 @@ def parse_arguments():
 
     return parser.parse_args()
 
-def psi(x, n, L):
-    k = (n * np.pi) / L
-    normalization_constant = np.sqrt(2.0 / L)
-    return normalization_constant * np.sin(k * (x + 0.5 * L))
+def psi(x, n, omega):
+    constants = (1.0 / (np.sqrt(np.math.factorial(n) * (2 ** n)))) * (((m * omega) / np.pi) ** 0.25)
+    exponent = np.exp(-0.5 * m * omega * np.power(x, 2))
+    hermite_coefficients = [0] * n + [1]
+    hermite = np.polynomial.hermite.Hermite(hermite_coefficients)
+    hermite_value = hermite(x * np.sqrt(m * omega))
+    result = constants * exponent * hermite_value
+    
+    return result
 
 
 if __name__ == '__main__':
@@ -42,32 +50,32 @@ if __name__ == '__main__':
     num_train = int(args.num_train)
     num_test = int(args.num_test)
 
-    domain_x = dde.geometry.Interval(-LX / 2, LX / 2)
-    domain_y = dde.geometry.Interval(-LY / 2, LY / 2)
+    domain_x = dde.geometry.Interval(-LX, LX)
+    domain_y = dde.geometry.Interval(-LY, LY)
 
-    function_net_x = fixedn.FunctionFixedN(lambda x: psi(x, nx, LX), domain_x, layers, nodes, num_train, num_test)
-    function_net_y = fixedn.FunctionFixedN(lambda y: psi(y, ny, LY), domain_y, layers, nodes, num_train, num_test)
-    
+    function_net_x = fixedn.FunctionFixedN(lambda x: psi(x, nx, omega_x), domain_x, layers, nodes, num_train, num_test)
+    function_net_y = fixedn.FunctionFixedN(lambda y: psi(y, ny, omega_y), domain_y, layers, nodes, num_train, num_test)
+
     function_net_x.train_net()
-    function_net_y.train_net()   
+    function_net_y.train_net()
 
     true_values = utils.get_2d_values(
-        lambda data: utils.value_2d_rectangle(data, lambda x: psi(x, nx, LX), lambda y: psi(y, ny, LY)),
-        -LX / 2,
-        LX / 2,
-        -LY / 2,
-        LY / 2
+        lambda data: utils.value_2d_rectangle(data, lambda x: psi(x, nx, omega_x), lambda y: psi(y, ny, omega_y)),
+        -LX,
+        LX,
+        -LY,
+        LY
     )
     
     predicted_values = utils.get_2d_values(
         lambda x: utils.value_2d_model(x, function_net_x, function_net_y),
-        -LX / 2,
-        LX / 2,
-        -LY / 2,
-        LY / 2
+        -LX,
+        LX,
+        -LY,
+        LY
     )
 
-    extent=[-LX / 2, LX / 2, -LY / 2, LY / 2]
+    extent=[-LX, LX, -LY, LY]
     output_name_body = '{}-{}-{}-{}-{}'.format(nx, ny, layers, nodes, num_train)
 
     storage.plot_2d_map(
@@ -85,4 +93,4 @@ if __name__ == '__main__':
 
     test_metric = dde.metrics.l2_relative_error(true_values, predicted_values)
     csv_row = [nx, ny, layers, nodes, num_train, num_test, test_metric]
-    storage.save_to_csv('rectangular-function', csv_row)
+    storage.save_to_csv('function', csv_row)
