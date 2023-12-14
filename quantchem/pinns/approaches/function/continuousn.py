@@ -6,7 +6,7 @@ import quantchem.pinns.approaches.defaults as defaults
 from .abstractfunction import FunctionApproach
 
 
-class FunctionFixedN(FunctionApproach):
+class FunctionContinuousN(FunctionApproach):
 
     def __init__(self, 
                  function: typing.Callable[[np.ndarray], np.ndarray],
@@ -22,4 +22,4 @@ class FunctionFixedN(FunctionApproach):
                          nodes,
                          num_train,
                          num_test,
-                         input_dimension=1)
+                         input_dimension=2)

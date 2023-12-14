@@ -62,8 +62,11 @@ def save_prediction_plot(function_name: str, plot_file_name: str) -> None:
     
     test_file.close()
     
+    save_prediction_plot_from_points(function_name, plot_file_name, x_train, x_test, y_train, y_true, y_pred)
+
+def save_prediction_plot_from_points(function_name: str, plot_file_name: str, x_train: np.ndarray, x_test: np.ndarray, y_train: np.ndarray, y_true: np.ndarray, y_pred: np.ndarray, train_label: str = 'Training points') -> None:
     plt.figure()
-    plt.plot(x_train, y_train, 'o', color='black', label='Training points')
+    plt.plot(x_train, y_train, 'o', color='black', label=train_label)
     plt.plot(x_test, y_true, '-', color='black', label='True values')
     plt.plot(x_test, y_pred, '--', color='red', label='Predicted values')
     
