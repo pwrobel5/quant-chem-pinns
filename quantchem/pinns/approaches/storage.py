@@ -3,6 +3,16 @@ import numpy as np
 import matplotlib.pyplot as plt
 
 
+def sort_xy_data(x: list[float], y: list[float]) -> tuple[np.ndarray, np.ndarray]:
+    x = np.array(x)
+    y = np.array(y)
+
+    sorted_indices = x.argsort()
+    x_sorted = x[sorted_indices]
+    y_sorted = y[sorted_indices]
+
+    return x_sorted, y_sorted
+
 def save_loss_plot(plot_file_name: str) -> None:
     loss_file = open('loss.dat', 'r')
     
@@ -46,6 +56,8 @@ def save_prediction_plot(function_name: str, plot_file_name: str) -> None:
         y_train.append(float(line[1]))
     
     train_file.close()
+
+    x_train, y_train = sort_xy_data(x_train, y_train)
     
     test_file = open('test.dat', 'r')
     
@@ -61,8 +73,11 @@ def save_prediction_plot(function_name: str, plot_file_name: str) -> None:
         y_pred.append(float(line[2]))
     
     test_file.close()
+
+    x_test_sorted, y_true = sort_xy_data(x_test, y_true)
+    x_test_sorted, y_pred = sort_xy_data(x_test, y_pred)
     
-    save_prediction_plot_from_points(function_name, plot_file_name, x_train, x_test, y_train, y_true, y_pred)
+    save_prediction_plot_from_points(function_name, plot_file_name, x_train, x_test_sorted, y_train, y_true, y_pred)
 
 def save_prediction_plot_from_points(function_name: str, plot_file_name: str, x_train: np.ndarray, x_test: np.ndarray, y_train: np.ndarray, y_true: np.ndarray, y_pred: np.ndarray, train_label: str = 'Training points') -> None:
     plt.figure()
