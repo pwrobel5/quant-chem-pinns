@@ -1,6 +1,11 @@
 import csv
 import numpy as np
+import deepxde as dde
 import matplotlib.pyplot as plt
+
+from ..utils import get_values_for_n
+from .function.continuousn import FunctionContinuousN
+from .pde.pde import PDEApproach
 
 
 def sort_xy_data(x: list[float], y: list[float]) -> tuple[np.ndarray, np.ndarray]:
@@ -107,3 +112,32 @@ def plot_2d_map(values: np.ndarray, zlabel: str, extent: list[float], plot_file_
     plt.ylabel('y')
     
     plt.savefig('{}-results.png'.format(plot_file_name))
+
+def save_results_variable_n(function_name: str, csv_row: list[float], csv_file_name: str,
+                            plot_file_name: str, x: np.ndarray, y_true: np.ndarray, y_pred: np.ndarray) -> None:
+    save_prediction_plot_from_points(function_name, plot_file_name,
+                                                 x, x, y_true, y_true, y_pred,
+                                                 train_label='Testing points')
+        
+    test_metric = dde.metrics.l2_relative_error(y_true, y_pred)
+    csv_row += [test_metric]
+    save_to_csv(csv_file_name, csv_row)
+
+def save_results_variable_n_function(n: int, net: FunctionContinuousN, psi: callable, x_min: float, x_max: float, num_points: int,
+                                layers: int, nodes: int, num_train: int, num_test: int, csv_file_name: str) -> None:
+    x, y_pred, y_true = get_values_for_n(n, net, psi, x_min, x_max, num_points)
+    function_name = '$\psi_{}$(x)'.format(n)
+    plot_file_name = '{}-{}-{}-{}'.format(n, layers, nodes, num_train)    
+    csv_row = [n, layers, nodes, num_train, num_test]
+
+    save_results_variable_n(function_name, csv_row, csv_file_name, plot_file_name, x, y_true, y_pred)
+
+def save_results_variable_n_pde(n: int, net: PDEApproach, psi: callable, x_min: float, x_max: float, num_points: int,
+                                layers: int, nodes: int, num_train: int, num_test: int, is_random: bool, weights: int,
+                                csv_file_name: str) -> None:
+    x, y_pred, y_true = get_values_for_n(n, net, psi, x_min, x_max, num_points)
+    function_name = '$\psi_{}$(x)'.format(n)
+    plot_file_name = '{}-{}-{}-{}-{}-{}'.format(n, layers, nodes, num_train, is_random, weights)
+    csv_row = [n, layers, nodes, num_train, num_test, is_random, weights]
+
+    save_results_variable_n(function_name, csv_row, csv_file_name, plot_file_name, x, y_true, y_pred)

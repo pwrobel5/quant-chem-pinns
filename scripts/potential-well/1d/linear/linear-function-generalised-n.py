@@ -45,13 +45,4 @@ if __name__ == '__main__':
     storage.save_loss_plot('linear-function-generalised-n')
     
     for i in range(1, 8):
-        x, y_pred, y_true = utils.get_values_for_n(i, function_net, psi, -L / 2, L / 2, defaults.DEFAULT_NUM_TEST)
-        function_name = '$\psi_{}$(x)'.format(i)
-        plot_file_name = '{}-{}-{}-{}'.format(i, layers, nodes, num_train)
-        storage.save_prediction_plot_from_points(function_name, plot_file_name,
-                                                 x, x, y_true, y_true, y_pred,
-                                                 train_label='Testing points')
-        
-        test_metric = dde.metrics.l2_relative_error(y_true, y_pred)
-        csv_row = [i, layers, nodes, num_train, num_test, test_metric]
-        storage.save_to_csv('linear-function-generalised-n', csv_row)
+        storage.save_results_variable_n_function(i, function_net, psi, -L / 2, L / 2, args.num_test, layers, nodes, num_train, num_test, 'linear-function-generalised-n')

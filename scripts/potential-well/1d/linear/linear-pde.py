@@ -1,8 +1,6 @@
 import deepxde as dde
 import numpy as np
-import matplotlib.pyplot as plt
 import argparse
-import csv
 
 import quantchem.pinns.approaches.defaults as defaults
 import quantchem.pinns.approaches.storage as storage

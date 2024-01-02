@@ -1,7 +1,7 @@
 import typing
 import numpy as np
 
-import quantchem.pinns.approaches.function.abstractfunction as function
+import quantchem.pinns.approaches.approach as approach
 
 # TODO: correct type annotations
 
@@ -40,7 +40,7 @@ def get_2d_values(input_function, x_min, x_max, y_min, y_max, grid_dist=0.02) ->
     function_values = np.array(function_list)
     return function_values
 
-def get_values_for_n(n, model: function.FunctionApproach, function, x_min, x_max, num_points) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
+def get_values_for_n(n, model: approach.AbstractApproach, function, x_min, x_max, num_points) -> tuple[np.ndarray, np.ndarray, np.ndarray]:
     x = np.linspace(x_min, x_max, num=num_points)
     points = np.array(list([i, n] for i in x))  # list used to evaluate the generator, otherwise predict methods throws errors
     y_pred = model.predict(points)
