@@ -1,10 +1,9 @@
-import deepxde as dde
-import numpy as np
 import argparse
 
 import quantchem.pinns.approaches.defaults as defaults
 import quantchem.pinns.approaches.storage as storage
 import quantchem.pinns.approaches.function.fixedn as fixedn
+import quantchem.pinns.problems.linearwell as linearwell
 
 
 DEFAULT_N = 1
@@ -22,11 +21,6 @@ def parse_arguments():
 
     return parser.parse_args()
 
-def psi(x):
-    k = (n * np.pi) / L
-    normalization_constant = np.sqrt(2.0 / L)
-    return normalization_constant * np.sin(k * (x + 0.5 * L))
-
 
 if __name__ == '__main__':
     args = parse_arguments()
@@ -37,9 +31,9 @@ if __name__ == '__main__':
     num_train = int(args.num_train)
     num_test = int(args.num_test)
 
-    domain = dde.geometry.Interval(-L / 2, L / 2)
-    
-    function_net = fixedn.FunctionFixedN(psi, domain, layers, nodes, num_train, num_test)
+    problem = linearwell.LinearWell(n, L, 0)
+        
+    function_net = fixedn.FunctionFixedN(problem.exact_solution, problem.domain, layers, nodes, num_train, num_test)
     function_net.train_net()
     
     storage.save_loss_plot('linear-function')
