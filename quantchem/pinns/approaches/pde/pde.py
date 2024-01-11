@@ -18,7 +18,8 @@ class PDEApproach(AbstractApproach):
                  num_train: int,
                  num_boundary: int,
                  num_test: int,
-                 input_dimension: int = 1) -> None:
+                 input_dimension: int = 1,
+                 exclusions: list[float] = None) -> None:
         
         super().__init__()
 
@@ -29,7 +30,8 @@ class PDEApproach(AbstractApproach):
             num_domain=num_train,
             num_boundary=num_boundary,
             num_test=num_test,
-            solution=solution
+            solution=solution,
+            exclusions=exclusions
         )
 
         self._compile_model(layers, nodes, input_dimension, loss_weights)

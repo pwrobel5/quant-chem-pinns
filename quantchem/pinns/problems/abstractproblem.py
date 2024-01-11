@@ -27,3 +27,7 @@ class AbstractProblem(abc.ABC):
     @abc.abstractproperty
     def loss_weights(self) -> list[float]:
         raise NotImplemented('loss_weights not implemented!')
+    
+    @property
+    def exclusions(self) -> list[float]:
+        return None

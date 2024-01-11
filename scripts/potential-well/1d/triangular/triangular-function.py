@@ -1,11 +1,9 @@
-import deepxde as dde
-import numpy as np
-import scipy.special as sp
 import argparse
 
 import quantchem.pinns.approaches.defaults as defaults
 import quantchem.pinns.approaches.storage as storage
 import quantchem.pinns.approaches.function.fixedn as fixedn
+import quantchem.pinns.problems.triangularwell as triangularwell
 
 
 DEFAULT_N = 1
@@ -25,20 +23,6 @@ def parse_arguments():
 
     return parser.parse_args()
 
-def psi(x):
-    ai_zeros, _, _, _ = sp.ai_zeros(n)
-    alpha_n = ai_zeros[-1]
-    E = -alpha_n * np.power((q ** 2) * (epsilon ** 2) / 2, (1 / 3))
-    
-    cube_root = np.power(2 * q * epsilon, (1 / 3))
-    
-    ai_value, _, _, _ = sp.airy(cube_root * (x - (E / (q * epsilon))))
-    _, aip_value, _, _ = sp.airy(-cube_root * (E / (q * epsilon)))
-    
-    normalization_constant = np.sqrt(cube_root / (aip_value ** 2))
-    
-    return normalization_constant * ai_value
-
 
 if __name__ == '__main__':
     args = parse_arguments()
@@ -49,9 +33,9 @@ if __name__ == '__main__':
     num_train = int(args.num_train)
     num_test = int(args.num_test)
 
-    domain = dde.geometry.Interval(0, R)
+    problem = triangularwell.TriangularWell(n, R, q, epsilon, 0)
 
-    function_net = fixedn.FunctionFixedN(psi, domain, layers, nodes, num_train, num_test)
+    function_net = fixedn.FunctionFixedN(problem.exact_solution, problem.domain, layers, nodes, num_train, num_test)
     function_net.train_net()
 
     storage.save_loss_plot('triangular-function')
