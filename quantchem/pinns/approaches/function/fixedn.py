@@ -15,8 +15,5 @@ class FunctionFixedN(FunctionApproach):
         
         super().__init__(function,
                          domain,
-                         parameters.layers,
-                         parameters.nodes,
-                         parameters.num_train,
-                         parameters.num_test,
+                         parameters,
                          input_dimension=1)
