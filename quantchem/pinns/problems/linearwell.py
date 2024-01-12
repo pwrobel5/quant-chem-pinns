@@ -70,7 +70,7 @@ class LinearWell(AbstractProblem):
         
         return np.array(points)
     
-    def __x_boundary(self, _, on_boundary) -> bool:
+    def __x_boundary(self, _, on_boundary: bool) -> bool:
         return on_boundary
     
 
@@ -146,7 +146,7 @@ class LinearWellVariableN(AbstractProblem):
         
         return np.array(points)
 
-    def __x_boundary(self, x, on_boundary) -> bool:
+    def __x_boundary(self, x, _) -> bool:
         if x[1].is_integer():
             return np.isclose(-self._L / 2, x[0]) or np.isclose(self._L / 2, x[0])
         return False

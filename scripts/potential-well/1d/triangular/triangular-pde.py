@@ -4,8 +4,6 @@ import quantchem.pinns.approaches.pde.pde as pdenet
 import quantchem.pinns.problems.triangularwell as triangularwell
 
 
-DEFAULT_N = 1
-
 R = 2
 q = 1
 epsilon = 1

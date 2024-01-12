@@ -57,7 +57,7 @@ class TriangularWell(AbstractProblem):
 
     @property
     def loss_weights(self) -> list[float]:
-        self._loss_weights
+        return self._loss_weights
     
     @property
     def exclusions(self) -> list[float]:
@@ -74,5 +74,5 @@ class TriangularWell(AbstractProblem):
         
         return np.array(rs).reshape((3 * self._n - 1, 1))
 
-    def __x_boundary(self, x, on_boundary) -> bool:
+    def __x_boundary(self, x: np.ndarray, on_boundary: bool) -> bool:
         return on_boundary and np.isclose(0, x[0])
