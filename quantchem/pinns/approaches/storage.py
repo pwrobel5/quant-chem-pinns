@@ -112,6 +112,7 @@ def plot_2d_map(values: np.ndarray, zlabel: str, extent: list[float], plot_file_
     plt.ylabel('y')
     
     plt.savefig('{}-results.png'.format(plot_file_name))
+    plt.close()
 
 def save_results_variable_n(function_name: str, csv_row: list[float], csv_file_name: str,
                             plot_file_name: str, x: np.ndarray, y_true: np.ndarray, y_pred: np.ndarray) -> None:
